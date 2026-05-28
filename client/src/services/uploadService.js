@@ -28,7 +28,7 @@ export const uploadFile = async (file) => {
 
     const res = await axios.post(
 
-      "http://localhost:5000/api/upload",
+      "https://chat-at-gold.vercel.app/api/upload",
 
       formData,
 
