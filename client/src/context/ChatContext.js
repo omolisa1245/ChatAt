@@ -17,7 +17,7 @@ export const ChatProvider = ({ children }) => {
   const { getToken } = useAuth();
 
   // FIXED URL
-  const API = "http://localhost:5000";
+  const API = "https://chat-at-gold.vercel.app";
 
 
   const authHeaders = async () => {
