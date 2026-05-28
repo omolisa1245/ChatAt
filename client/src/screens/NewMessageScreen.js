@@ -21,7 +21,7 @@ import { Audio } from "expo-av";
 
 import API from "../api/client";
 
-import { useUser } from "@clerk/clerk-expo";
+import { useAuth, useUser } from "@clerk/clerk-expo";
 
 import MessageInput from "../components/MessageInput";
 
@@ -39,6 +39,7 @@ export default function NewMessageScreen({ navigation }) {
     const recordingRef = useRef(null);
 
     const { user } = useUser();
+    const { getToken } = useAuth();
 
     // FILTER USERS
     const filteredUsers = users.filter((u) =>
@@ -261,6 +262,10 @@ export default function NewMessageScreen({ navigation }) {
                 return;
             }
 
+            const token = await getToken();
+
+            console.log("TOKEN:", token);
+
             const receiver = selectedUsers[0];
 
             const cleanText = message?.trim();
@@ -289,10 +294,17 @@ export default function NewMessageScreen({ navigation }) {
 
             console.log("PAYLOAD:", payload);
 
-            await API.post(
+            const res = await API.post(
                 "/messages/send",
-                payload
+                payload,
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                }
             );
+
+            console.log("MESSAGE SENT:", res.data);
 
             setMessage("");
             setAttachments([]);
@@ -323,7 +335,8 @@ export default function NewMessageScreen({ navigation }) {
 
             console.log(
                 "SEND ERROR:",
-                error.response?.data || error.message
+                error.response?.data ||
+                error.message
             );
         }
     };
