@@ -113,7 +113,9 @@ export default function EditProfileScreen({ navigation }) {
     const fetchProfile = async () => {
         try {
 
-            const token = await getToken();
+            const token = await getToken({
+                template: "default",
+            });
 
             console.log("TOKEN:", token);
 
@@ -171,8 +173,9 @@ export default function EditProfileScreen({ navigation }) {
 
             setLoading(true);
 
-            const token =
-                await getToken();
+            const token = await getToken({
+                template: "default",
+            });
 
             let uploadedImage =
                 profileImage;
