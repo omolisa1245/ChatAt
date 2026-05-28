@@ -21,6 +21,7 @@ import {
 
 import {
   useUser,
+  useAuth,
 } from "@clerk/clerk-expo";
 
 import {
@@ -43,6 +44,9 @@ export default function Stories() {
 
   const [scrollX, setScrollX] =
     useState(0);
+
+  const { getToken } =
+    useAuth();
 
   // ================= GROUP STORIES =================
 
@@ -78,10 +82,10 @@ export default function Stories() {
             };
           }
 
-          acc[id].items.push(
-            ...(story.items ||
-              [])
-          );
+          acc[id].items = [
+            ...acc[id].items,
+            ...(story.items || []),
+          ];
 
           if (
             !acc[id].preview &&
@@ -93,10 +97,8 @@ export default function Stories() {
           ) {
 
             acc[id].preview =
-              story.items[0]
-                .url ||
-              story.items[0]
-                .uri;
+             story.items?.[0]?.url ||
+             story.items?.[0]?.url
           }
 
           return acc;
@@ -116,10 +118,29 @@ export default function Stories() {
 
       try {
 
+        const token =
+          await getToken();
+
+        console.log(
+          "STORY TOKEN:",
+          token
+        );
+
         const res =
           await API.get(
-            "/stories"
+            "/stories",
+            {
+              headers: {
+                Authorization:
+                  `Bearer ${token}`,
+              },
+            }
           );
+
+        console.log(
+          "STORIES:",
+          res.data
+        );
 
         setStories(
           res.data
@@ -128,7 +149,9 @@ export default function Stories() {
       } catch (err) {
 
         console.log(
-          err
+          "FETCH STORIES ERROR:",
+          err.response?.data ||
+          err.message
         );
       }
     };
@@ -188,10 +211,10 @@ export default function Stories() {
       {/* HEADER */}
       <View className="flex-row items-center justify-between px-3 mb-4">
 
-      
+
 
         {/* SCROLL BUTTONS */}
-        <View className="flex-row ml-99">
+        <View className="flex-row ">
 
           {/* LEFT */}
           <TouchableOpacity
@@ -384,7 +407,7 @@ export default function Stories() {
                 {isMe
                   ? "Your Story"
                   : item.username ||
-                    "User"}
+                  "User"}
 
               </Text>
 

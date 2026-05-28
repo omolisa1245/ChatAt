@@ -30,7 +30,12 @@ const app = express();
 
 // ================= MIDDLEWARE =================
 app.use(cors({
-    origin: "*",
+    origin: [
+        "http://localhost:8081",
+        "http://localhost:19006",
+        "https://chat-at-gold.vercel.app",
+        "https://chat-at-ten.vercel.app",
+    ],
     credentials: true,
 }));
 
