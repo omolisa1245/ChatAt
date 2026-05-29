@@ -33,6 +33,9 @@ export default function ShareProfileScreen({ navigation }) {
 
     const image =
         user?.imageUrl ||
+        user?.image ||
+        user?.profileImage ||
+        user?.photo ||
         "https://i.pravatar.cc/300";
 
     // Replace with your real domain
@@ -176,7 +179,15 @@ export default function ShareProfileScreen({ navigation }) {
                         source={{
                             uri: image,
                         }}
-                        className="w-28 h-28 rounded-full"
+                        defaultSource={{
+                            uri: "https://i.pravatar.cc/300",
+                        }}
+                        style={{
+                            width: 112,
+                            height: 112,
+                            borderRadius: 56,
+                            backgroundColor: "#e5e7eb",
+                        }}
                     />
 
                     <Text className="text-xl font-bold mt-5">
