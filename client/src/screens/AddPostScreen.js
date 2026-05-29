@@ -31,6 +31,7 @@ import Cropper from "react-easy-crop";
 import { getCroppedImg } from "../utils/cropImage";
 import API from "../api/client";
 import { VideoView, useVideoPlayer } from "expo-video";
+import { Animated, Easing } from "react-native";
 
 
 
@@ -54,6 +55,7 @@ export default function CreatePostScreen({ navigation }) {
   const [showAdjustments, setShowAdjustments] = useState(false);
   const { getToken } = useAuth();
   const { user } = useUser();
+  const spinValue = useRef(new Animated.Value(0)).current;
 
 
 
@@ -101,6 +103,11 @@ export default function CreatePostScreen({ navigation }) {
   ];
 
   const [selectedFilter, setSelectedFilter] = useState(filters[0]);
+
+  const spin = spinValue.interpolate({
+    inputRange: [0, 1],
+    outputRange: ["0deg", "360deg"],
+  });
 
 
 
@@ -515,6 +522,20 @@ export default function CreatePostScreen({ navigation }) {
   };
 
 
+  useEffect(() => {
+    if (posting) {
+      Animated.loop(
+        Animated.timing(spinValue, {
+          toValue: 1,
+          duration: 800,
+          easing: Easing.linear,
+          useNativeDriver: true,
+        })
+      ).start();
+    }
+  }, [posting]);
+
+
   return (
     <View className="flex-1 bg-white pt-12">
 
@@ -525,9 +546,7 @@ export default function CreatePostScreen({ navigation }) {
 
           <TouchableOpacity
 
-            onPress={() => navigation.navigate("Home", {
-              refresh: true,
-            })}
+            onPress={() => navigation.goBack()}
 
 
           >
@@ -542,21 +561,30 @@ export default function CreatePostScreen({ navigation }) {
             Create Post
           </Text>
 
-         <TouchableOpacity
-  onPress={handlePost}
-  disabled={posting}
-  className={`px-4 py-2 rounded-full ${
-    posting ? "bg-gray-400" : "bg-[#1D618F]"
-  }`}
->
-  {posting ? (
-    <ActivityIndicator color="#fff" size="small" />
-  ) : (
-    <Text className="text-white text-sm font-bold">
-      Share
-    </Text>
-  )}
-</TouchableOpacity>
+          <TouchableOpacity
+            onPress={handlePost}
+            disabled={posting}
+            className={`px-4 py-2 rounded-full ${posting ? "bg-gray-400" : "bg-[#1D618F]"
+              }`}
+          >
+            {posting ? (
+              <Animated.View
+                style={{
+                  transform: [{ rotate: spin }],
+                }}
+              >
+                <Feather
+                  name="send"
+                  size={18}
+                  color="white"
+                />
+              </Animated.View>
+            ) : (
+              <Text className="text-white text-sm font-bold">
+                Share
+              </Text>
+            )}
+          </TouchableOpacity>
         </View>
       </View>
 

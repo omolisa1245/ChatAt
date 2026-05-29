@@ -20,7 +20,7 @@ import Stories from "../components/Stories";
 import PostCard from "../components/PostCard";
 import { useFocusEffect } from "@react-navigation/native";
 
-export default function HomeScreen({route, navigation}) {
+export default function HomeScreen({ route, navigation }) {
 
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -43,12 +43,9 @@ export default function HomeScreen({route, navigation}) {
 
 
   // FETCH POSTS
-  const fetchPosts = async () => {
+  const fetchPosts = useCallback(async () => {
     try {
-
       const res = await API.get("/posts");
-
-      console.log("POSTS:", res.data);
 
       setPosts(res.data);
 
@@ -63,19 +60,16 @@ export default function HomeScreen({route, navigation}) {
       setLoading(false);
       setRefreshing(false);
     }
-  };
-
-  // INITIAL LOAD
-  useEffect(() => {
-    fetchPosts();
   }, []);
 
-  // AUTO REFRESH WHEN RETURNING TO SCREEN
-  useEffect(() => {
-    if (route.params?.refresh) {
+
+
+
+  useFocusEffect(
+    useCallback(() => {
       fetchPosts();
-    }
-  }, [route.params?.refresh]);
+    }, [])
+  );
 
 
 
