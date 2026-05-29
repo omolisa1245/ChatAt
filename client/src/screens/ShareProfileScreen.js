@@ -15,7 +15,7 @@ import {
     Ionicons,
 } from "@expo/vector-icons";
 
-import { useUser,userAuth } from "@clerk/clerk-expo";
+import { useUser,useAuth } from "@clerk/clerk-expo";
 
 export default function ShareProfileScreen({ navigation }) {
 
