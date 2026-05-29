@@ -18,6 +18,7 @@ import API from "../api/client";
 import Header from "../components/Header";
 import Stories from "../components/Stories";
 import PostCard from "../components/PostCard";
+import { useFocusEffect } from "@react-navigation/native";
 
 export default function HomeScreen() {
 
@@ -68,6 +69,16 @@ export default function HomeScreen() {
   useEffect(() => {
     fetchPosts();
   }, []);
+
+  // AUTO REFRESH WHEN RETURNING TO SCREEN
+  useEffect(() => {
+    if (route.params?.refresh) {
+      fetchPosts();
+    }
+  }, [route.params?.refresh]);
+
+
+
 
   // PULL TO REFRESH
   const onRefresh = useCallback(() => {

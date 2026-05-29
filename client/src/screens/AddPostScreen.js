@@ -517,7 +517,14 @@ export default function CreatePostScreen({ navigation }) {
 
         <View className="flex-row items-center justify-between">
 
-          <TouchableOpacity onPress={() => navigation.goBack()}>
+          <TouchableOpacity
+
+            onPress={() => navigation.navigate("Home", {
+              refresh: true,
+            })}
+
+
+          >
             <Feather
               name="arrow-left"
               size={24}
