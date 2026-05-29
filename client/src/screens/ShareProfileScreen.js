@@ -15,11 +15,12 @@ import {
     Ionicons,
 } from "@expo/vector-icons";
 
-import { useUser } from "@clerk/clerk-expo";
+import { useUser,userAuth } from "@clerk/clerk-expo";
 
 export default function ShareProfileScreen({ navigation }) {
 
     const { user } = useUser();
+      const { getToken} = useAuth();
 
     // ================= USER DATA =================
     const username =
