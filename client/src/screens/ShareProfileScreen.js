@@ -1,4 +1,3 @@
-
 import React from "react";
 
 import {
@@ -14,31 +13,80 @@ import {
 import {
     Feather,
     Ionicons,
-    MaterialIcons,
 } from "@expo/vector-icons";
+
+import { useUser } from "@clerk/clerk-expo";
 
 export default function ShareProfileScreen({ navigation }) {
 
+    const { user } = useUser();
+
+    // ================= USER DATA =================
+    const username =
+        user?.username ||
+        user?.firstName ||
+        "user";
+
+    const fullName =
+        user?.fullName ||
+        `${user?.firstName || ""} ${user?.lastName || ""}`;
+
+    const image =
+        user?.imageUrl ||
+        "https://i.pravatar.cc/300";
+
+    // Replace with your real domain
     const profileLink =
-        "https://chatat.app/omolisa_olaye";
+        `https://chatat.app/${username}`;
 
+    // Replace these later with real backend stats
+    const stats = {
+        posts: 0,
+        followers: 0,
+        following: 0,
+    };
 
-    // =========================
-    // SHARE PROFILE
-    // =========================
+    // ================= SHARE PROFILE =================
     const handleShare = async () => {
 
         try {
+
             await Share.share({
                 message:
-                    `Check out my profile on ChatAt 🚀\n\n${profileLink}`,
+                    `Check out ${fullName}'s profile on ChatAt 🚀\n\n${profileLink}`,
             });
 
         } catch (error) {
-            Alert.alert("Error", "Unable to share profile");
+
+            Alert.alert(
+                "Error",
+                "Unable to share profile"
+            );
         }
     };
 
+    // ================= COPY LINK =================
+    const handleCopy = async () => {
+
+        try {
+
+            const Clipboard =
+                await import("expo-clipboard");
+
+            await Clipboard.setStringAsync(
+                profileLink
+            );
+
+            Alert.alert(
+                "Copied",
+                "Profile link copied"
+            );
+
+        } catch (err) {
+
+            console.log(err);
+        }
+    };
 
     const shareOptions = [
         {
@@ -46,39 +94,44 @@ export default function ShareProfileScreen({ navigation }) {
             title: "Copy Link",
             icon: "copy-outline",
             color: "#0095f6",
+            action: handleCopy,
         },
         {
             id: 2,
             title: "WhatsApp",
             icon: "logo-whatsapp",
             color: "#25D366",
+            action: handleShare,
         },
         {
             id: 3,
             title: "Instagram",
             icon: "logo-instagram",
             color: "#E1306C",
+            action: handleShare,
         },
         {
             id: 4,
             title: "Facebook",
             icon: "logo-facebook",
             color: "#1877F2",
+            action: handleShare,
         },
         {
             id: 5,
             title: "Messenger",
             icon: "chatbubble-ellipses-outline",
             color: "#0084FF",
+            action: handleShare,
         },
         {
             id: 6,
             title: "Telegram",
             icon: "paper-plane-outline",
             color: "#229ED9",
+            action: handleShare,
         },
     ];
-
 
     return (
         <View className="flex-1 bg-white pt-12">
@@ -96,11 +149,9 @@ export default function ShareProfileScreen({ navigation }) {
                     />
                 </TouchableOpacity>
 
-
                 <Text className="text-lg font-bold">
                     Share Profile
                 </Text>
-
 
                 <TouchableOpacity onPress={handleShare}>
                     <Ionicons
@@ -110,7 +161,6 @@ export default function ShareProfileScreen({ navigation }) {
                     />
                 </TouchableOpacity>
             </View>
-
 
             <ScrollView
                 showsVerticalScrollIndicator={false}
@@ -124,27 +174,24 @@ export default function ShareProfileScreen({ navigation }) {
 
                     <Image
                         source={{
-                            uri: "https://i.pravatar.cc/300?img=12",
+                            uri: image,
                         }}
                         className="w-28 h-28 rounded-full"
                     />
 
-
                     <Text className="text-xl font-bold mt-5">
-                        omolisa_olaye
+                        {fullName}
                     </Text>
-
 
                     <Text className="text-gray-500 mt-1">
-                        React Native Developer 🚀
+                        @{username}
                     </Text>
-
 
                     <View className="flex-row items-center mt-5">
 
                         <View className="items-center mx-5">
                             <Text className="font-bold text-lg">
-                                128
+                                {stats.posts}
                             </Text>
 
                             <Text className="text-gray-500 text-sm">
@@ -152,10 +199,9 @@ export default function ShareProfileScreen({ navigation }) {
                             </Text>
                         </View>
 
-
                         <View className="items-center mx-5">
                             <Text className="font-bold text-lg">
-                                14.2K
+                                {stats.followers}
                             </Text>
 
                             <Text className="text-gray-500 text-sm">
@@ -163,10 +209,9 @@ export default function ShareProfileScreen({ navigation }) {
                             </Text>
                         </View>
 
-
                         <View className="items-center mx-5">
                             <Text className="font-bold text-lg">
-                                890
+                                {stats.following}
                             </Text>
 
                             <Text className="text-gray-500 text-sm">
@@ -176,7 +221,6 @@ export default function ShareProfileScreen({ navigation }) {
                     </View>
                 </View>
 
-
                 {/* QR SECTION */}
                 <View className="mx-4 mt-8 bg-black rounded-3xl items-center py-8 px-5">
 
@@ -184,11 +228,12 @@ export default function ShareProfileScreen({ navigation }) {
                         Scan QR Code
                     </Text>
 
-
                     <View className="bg-white p-5 rounded-3xl">
+
                         <Image
                             source={{
-                                uri: "https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=https://chatat.app/omolisa_olaye",
+                                uri:
+                                    `https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${encodeURIComponent(profileLink)}`,
                             }}
                             style={{
                                 width: 220,
@@ -197,12 +242,10 @@ export default function ShareProfileScreen({ navigation }) {
                         />
                     </View>
 
-
                     <Text className="text-gray-300 mt-5 text-center leading-5">
                         Let people scan this code to visit your profile instantly.
                     </Text>
                 </View>
-
 
                 {/* SHARE OPTIONS */}
                 <View className="mt-10 px-4">
@@ -211,13 +254,13 @@ export default function ShareProfileScreen({ navigation }) {
                         Share To
                     </Text>
 
-
                     <View className="flex-row flex-wrap justify-between">
 
                         {shareOptions.map((item) => (
 
                             <TouchableOpacity
                                 key={item.id}
+                                onPress={item.action}
                                 className="w-[31%] bg-gray-50 rounded-2xl items-center py-6 mb-4 border border-gray-200"
                             >
 
@@ -238,20 +281,20 @@ export default function ShareProfileScreen({ navigation }) {
                                     />
                                 </View>
 
-
                                 <Text className="mt-3 font-medium text-[13px]">
                                     {item.title}
                                 </Text>
+
                             </TouchableOpacity>
                         ))}
                     </View>
                 </View>
 
-
                 {/* PROFILE LINK */}
                 <View className="mx-4 mt-6 border border-gray-200 rounded-2xl p-5 flex-row items-center justify-between">
 
                     <View className="flex-1 pr-3">
+
                         <Text className="text-gray-500 text-sm mb-1">
                             Profile Link
                         </Text>
@@ -264,14 +307,15 @@ export default function ShareProfileScreen({ navigation }) {
                         </Text>
                     </View>
 
-
-                    <TouchableOpacity className="bg-blue-500 px-5 py-2.5 rounded-full">
+                    <TouchableOpacity
+                        onPress={handleCopy}
+                        className="bg-blue-500 px-5 py-2.5 rounded-full"
+                    >
                         <Text className="text-white font-semibold">
                             Copy
                         </Text>
                     </TouchableOpacity>
                 </View>
-
 
                 {/* ACTION BUTTON */}
                 <TouchableOpacity
@@ -282,6 +326,7 @@ export default function ShareProfileScreen({ navigation }) {
                         Share Profile
                     </Text>
                 </TouchableOpacity>
+
             </ScrollView>
         </View>
     );

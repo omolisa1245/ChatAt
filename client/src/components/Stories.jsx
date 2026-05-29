@@ -97,8 +97,8 @@ export default function Stories() {
           ) {
 
             acc[id].preview =
-             story.items?.[0]?.url ||
-             story.items?.[0]?.url
+              story.items?.[0]?.url ||
+              story.items?.[0]?.url
           }
 
           return acc;
@@ -214,7 +214,13 @@ export default function Stories() {
 
 
         {/* SCROLL BUTTONS */}
-        <View className="flex-row ">
+        <View
+          style={{
+            flexDirection: "row",
+            justifyContent: "flex-end",
+            width: "100%",
+          }}
+        >
 
           {/* LEFT */}
           <TouchableOpacity

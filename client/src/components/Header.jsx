@@ -57,6 +57,10 @@ export default function Header() {
                 className="w-17 h-17"
             />
 
+           <View>
+            
+           
+
             <TouchableOpacity
                 onPress={() => navigation.navigate("Messages")}
             >
@@ -78,6 +82,7 @@ export default function Header() {
 
                 </View>
             </TouchableOpacity>
+           </View>
 
         </View>
     );

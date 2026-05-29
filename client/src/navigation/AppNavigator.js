@@ -11,7 +11,6 @@ import BottomTabs from "./BottomTabs";
 // STACK SCREENS
 import ChatScreen from "../screens/ChatScreen";
 import NewMessageScreen from "../screens/NewMessageScreen";
-import CallScreen from "../screens/CallScreen";
 import SearchScreen from "../screens/SearchScreen";
 import CreatePostScreen from "../screens/AddPostScreen";
 import NotificationScreen from "../screens/NotificationsScreen";
@@ -38,6 +37,8 @@ import StoryViewerScreen from "../screens/StoryViewerScreen";
 
 import EditPostScreen from "../screens/EditPostScreen";
 import UserProfileScreen from "../screens/UserProfileScreen";
+import VoiceCallScreen from "../screens/VideoCallScreen";
+import VideoCallScreen from "../screens/VoiceCallScreen";
 
 const Stack = createNativeStackNavigator();
 
@@ -59,7 +60,18 @@ export default function AppNavigator() {
             {/* CHAT FLOW */}
             <Stack.Screen name="Chat" component={ChatScreen} />
             <Stack.Screen name="CreateMessage" component={NewMessageScreen} />
-            <Stack.Screen name="CallScreen" component={CallScreen} />
+         
+            <Stack.Screen
+              name="VoiceCallScreen"
+              component={VoiceCallScreen}
+              options={{ headerShown: false }}
+            />
+
+            <Stack.Screen
+              name="VideoCallScreen"
+              component={VideoCallScreen}
+              options={{ headerShown: false }}
+            />
 
             {/* GENERAL */}
             <Stack.Screen name="Search" component={SearchScreen} />

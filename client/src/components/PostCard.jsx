@@ -43,16 +43,23 @@ const ReplyItem = ({
         <View
             style={{
                 marginTop: 16,
-                marginLeft: level > 0 ? 16 : 0,
+
+                // SMALLER INDENT
+                marginLeft: level > 0 ? 10 : 0,
+
+                // THREAD LINE
                 borderLeftWidth: level > 0 ? 1 : 0,
                 borderLeftColor: "#d1d5db",
-                paddingLeft: level > 0 ? 12 : 0,
+
+                // SMALLER PADDING
+                paddingLeft: level > 0 ? 10 : 0,
             }}
         >
 
             <View
                 style={{
                     flexDirection: "row",
+                    alignItems: "flex-start",
                 }}
             >
 
@@ -264,7 +271,6 @@ const ReplyItem = ({
                                 marginTop: 10,
                             }}
 
-                            className="-ml-12"
                         >
 
                             {item.replies.map((reply, index) => (

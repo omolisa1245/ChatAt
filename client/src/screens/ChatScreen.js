@@ -342,59 +342,190 @@ export default function ChatScreen({ route }) {
             className="flex-1 bg-[#f5f5f5]"
         >
 
-         
 
-                {/* HEADER */}
-                <View className="pt-12 pb-3 px-4 bg-white border-b border-gray-200 flex-row items-center">
 
-                    {/* BACK BUTTON */}
+
+            {/* HEADER */}
+            <View
+                style={{
+                    paddingTop: 52,
+                    paddingBottom: 12,
+                    paddingHorizontal: 16,
+                    backgroundColor: "#fff",
+                    borderBottomWidth: 1,
+                    borderBottomColor: "#e5e7eb",
+
+                    flexDirection: "row",
+                    alignItems: "center",
+                    justifyContent: "space-between",
+                }}
+            >
+
+                {/* LEFT SIDE */}
+                <View
+                    style={{
+                        flexDirection: "row",
+                        alignItems: "center",
+                        flex: 1,
+                    }}
+                >
+
+                    {/* BACK */}
                     <TouchableOpacity
                         onPress={() => navigation.goBack()}
-                        className="mr-4"
+                        style={{
+                            marginRight: 14,
+                        }}
                     >
                         <Feather
                             name="arrow-left"
                             size={24}
-                            color="black"
+                            color="#000"
                         />
                     </TouchableOpacity>
 
-                    {/* USER INFO */}
+                    {/* PROFILE */}
                     <TouchableOpacity
                         onPress={() =>
-                            navigation.navigate("Profile", {
+                            navigation.navigate("UserProfile", {
                                 user: chatUser,
                             })
                         }
-                        className="flex-row items-center flex-1"
+                        style={{
+                            flexDirection: "row",
+                            alignItems: "center",
+                            flex: 1,
+                        }}
                     >
 
-                        <Image
-                            source={{
-                                uri:
-                                    liveUser?.image ||
-                                    "https://i.pravatar.cc/150",
+                        {/* IMAGE */}
+                        <View>
+
+                            <Image
+                                source={{
+                                    uri:
+                                        liveUser?.image ||
+                                        liveUser?.imageUrl ||
+                                        "https://i.pravatar.cc/150",
+                                }}
+                                style={{
+                                    width: 44,
+                                    height: 44,
+                                    borderRadius: 22,
+                                }}
+                            />
+
+                            {/* ONLINE DOT */}
+                            <View
+                                style={{
+                                    position: "absolute",
+                                    bottom: 1,
+                                    right: 1,
+
+                                    width: 12,
+                                    height: 12,
+                                    borderRadius: 6,
+
+                                    backgroundColor: "#22c55e",
+
+                                    borderWidth: 2,
+                                    borderColor: "#fff",
+                                }}
+                            />
+
+                        </View>
+
+                        {/* USER INFO */}
+                        <View
+                            style={{
+                                marginLeft: 12,
+                                flex: 1,
                             }}
-                            className="w-11 h-11 rounded-full"
-                        />
+                        >
 
-                        <View className="ml-3">
-
-                            <Text className="font-bold text-base">
-                                {liveUser?.name || "User"}
+                            <Text
+                                numberOfLines={1}
+                                style={{
+                                    fontSize: 16,
+                                    fontWeight: "700",
+                                    color: "#000",
+                                }}
+                            >
+                                {liveUser?.name ||
+                                    liveUser?.fullName ||
+                                    "User"}
                             </Text>
 
-                            <Text className="text-gray-500 text-xs">
-                                @{liveUser?.username || "user"}
+                            <Text
+                                style={{
+                                    color: "#6b7280",
+                                    fontSize: 12,
+                                    marginTop: 2,
+                                }}
+                            >
+                                Active now
                             </Text>
 
                         </View>
 
                     </TouchableOpacity>
+
                 </View>
 
-                
-      
+                {/* RIGHT ICONS */}
+                <View
+                    style={{
+                        flexDirection: "row",
+                        alignItems: "center",
+                    }}
+                >
+
+
+                    {/* VOICE CALL */}
+                    <TouchableOpacity
+                        style={{
+                            marginRight: 18,
+                        }}
+                        onPress={() =>
+                            navigation.navigate(
+                                "VoiceCallScreen",
+                                {
+                                    user: liveUser,
+                                }
+                            )
+                        }
+                    >
+                        <Feather
+                            name="phone"
+                            size={22}
+                            color="#000"
+                        />
+                    </TouchableOpacity>
+
+                    {/* VIDEO CALL */}
+                    <TouchableOpacity
+                        onPress={() =>
+                            navigation.navigate(
+                                "VideoCallScreen",
+                                {
+                                    user: liveUser,
+                                }
+                            )
+                        }
+                    >
+                        <Feather
+                            name="video"
+                            size={24}
+                            color="#000"
+                        />
+                    </TouchableOpacity>
+
+                </View>
+
+            </View>
+
+
+
 
             {/* CHAT BODY */}
             <ScrollView
@@ -403,12 +534,98 @@ export default function ChatScreen({ route }) {
                 contentContainerStyle={{
                     paddingVertical: 20,
                 }}
-                onContentSizeChange={() =>
-                    scrollViewRef.current?.scrollToEnd({
-                        animated: true,
-                    })
-                }
             >
+
+
+
+                {/* PROFILE PREVIEW */}
+                <View
+                    style={{
+                        alignItems: "center",
+                        paddingVertical: 35,
+                        marginBottom: 20,
+                    }}
+                >
+
+                    {/* PROFILE IMAGE */}
+                    <Image
+                        source={{
+                            uri:
+                                liveUser?.image ||
+                                liveUser?.imageUrl ||
+                                "https://i.pravatar.cc/300",
+                        }}
+                        style={{
+                            width: 92,
+                            height: 92,
+                            borderRadius: 46,
+                        }}
+                    />
+
+                    {/* NAME */}
+                    <Text
+                        style={{
+                            marginTop: 16,
+                            fontSize: 22,
+                            fontWeight: "700",
+                            color: "#000",
+                        }}
+                    >
+                        {liveUser?.name ||
+                            liveUser?.fullName ||
+                            "User"}
+                    </Text>
+
+                    {/* USERNAME */}
+                    <Text
+                        style={{
+                            marginTop: 4,
+                            fontSize: 15,
+                            color: "#6b7280",
+                        }}
+                    >
+                        @
+                        {liveUser?.username ||
+                            liveUser?.userName ||
+                            "username"}
+                    </Text>
+
+
+                    {/* VIEW PROFILE BUTTON */}
+                    <TouchableOpacity
+                        onPress={() =>
+                            navigation.navigate(
+                                "UserProfile",
+                                {
+                                    user: liveUser,
+                                }
+                            )
+                        }
+                        style={{
+                            marginTop: 18,
+                            backgroundColor: "#f3f4f6",
+                            paddingHorizontal: 26,
+                            paddingVertical: 12,
+                            borderRadius: 14,
+                        }}
+                    >
+
+                        <Text
+                            style={{
+                                fontWeight: "600",
+                                fontSize: 15,
+                            }}
+
+                            className="border-3 border-gray-300 p-2 rounded-3xl"
+                        >
+                            View Profile
+                        </Text>
+
+                    </TouchableOpacity>
+
+                </View>
+
+
 
                 {cleanMessages.map((msg, index) => {
 

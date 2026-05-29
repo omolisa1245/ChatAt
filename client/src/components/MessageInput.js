@@ -145,11 +145,11 @@ export default function MessageInput({
                     )}
 
                     {/* INPUT ROW */}
-                    <View className="flex-row items-center">
+                    <View className="flex-row items-center bg-white px-3 py-2 rounded-full">
 
                         {/* CAMERA */}
                         <TouchableOpacity
-                            className="mr-4"
+                            className="mr-3"
                             onPress={openCamera}
                         >
                             <Feather
@@ -158,65 +158,75 @@ export default function MessageInput({
                             />
                         </TouchableOpacity>
 
-                        {/* TEXT INPUT */}
-                        <TextInput
-                            placeholder="Message..."
-                            value={message}
-                            onChangeText={setMessage}
-                            className="flex-1 text-base outline-none"
-                        />
+                        {/* INPUT */}
+                        <View className="flex-1 mr-2">
+                            <TextInput
+                                placeholder="Message..."
+                                value={message}
+                                onChangeText={setMessage}
+                                className="text-base"
+                                placeholderTextColor="#888"
+                                className="outline-none"
+                            />
+                        </View>
 
-                        {/* MIC */}
-                        <TouchableOpacity
-                            className="mr-4"
-                            onPress={
-                                isRecording
-                                    ? stopRecording
-                                    : startRecording
-                            }
-                        >
-                            <Feather
-                                name="mic"
-                                size={20}
-                                color={
+                        {/* RIGHT ICONS */}
+                        <View className="flex-row items-center">
+
+                            {/* MIC */}
+                            <TouchableOpacity
+                                className="mx-1"
+                                onPress={
                                     isRecording
-                                        ? "red"
-                                        : "black"
+                                        ? stopRecording
+                                        : startRecording
                                 }
-                            />
-                        </TouchableOpacity>
+                            >
+                                <Feather
+                                    name="mic"
+                                    size={20}
+                                    color={
+                                        isRecording
+                                            ? "red"
+                                            : "black"
+                                    }
+                                />
+                            </TouchableOpacity>
 
-                        {/* EMOJI */}
-                        <TouchableOpacity
-                            className="mr-4"
-                            onPress={() => setPanel("emoji")}
-                        >
-                            <Feather
-                                name="smile"
-                                size={20}
-                            />
-                        </TouchableOpacity>
+                            {/* EMOJI */}
+                            <TouchableOpacity
+                                className="mx-1"
+                                onPress={() => setPanel("emoji")}
+                            >
+                                <Feather
+                                    name="smile"
+                                    size={20}
+                                />
+                            </TouchableOpacity>
 
-                        {/* GIF */}
-                        <TouchableOpacity
-                            className="mr-4"
-                            onPress={() => setPanel("gif")}
-                        >
-                            <MaterialCommunityIcons
-                                name="sticker-emoji"
-                                size={20}
-                            />
-                        </TouchableOpacity>
+                            {/* GIF */}
+                            <TouchableOpacity
+                                className="mx-1"
+                                onPress={() => setPanel("gif")}
+                            >
+                                <MaterialCommunityIcons
+                                    name="sticker-emoji"
+                                    size={20}
+                                />
+                            </TouchableOpacity>
 
-                        {/* SEND */}
-                        <TouchableOpacity
-                            onPress={handleSend}
-                        >
-                            <Feather
-                                name="send"
-                                size={20}
-                            />
-                        </TouchableOpacity>
+                            {/* SEND */}
+                            <TouchableOpacity
+                                className="ml-1"
+                                onPress={handleSend}
+                            >
+                                <Feather
+                                    name="send"
+                                    size={20}
+                                />
+                            </TouchableOpacity>
+
+                        </View>
                     </View>
                 </View>
             </View>
