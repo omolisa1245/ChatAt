@@ -20,7 +20,7 @@ import Stories from "../components/Stories";
 import PostCard from "../components/PostCard";
 import { useFocusEffect } from "@react-navigation/native";
 
-export default function HomeScreen() {
+export default function HomeScreen({route, navigation}) {
 
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
