@@ -11,7 +11,8 @@ import {
   ScrollView,
   Alert,
   Dimensions,
-  Platform
+  Platform,
+  ActivityIndicator,
 } from "react-native";
 
 import { useAuth } from "@clerk/clerk-expo";
@@ -65,6 +66,7 @@ export default function CreatePostScreen({ navigation }) {
 
   const [aspect, setAspect] = useState(4 / 5);
   const [profileImage, setProfileImage] = useState("");
+  const [posting, setPosting] = useState(false);
 
 
   const filters = [
@@ -368,6 +370,8 @@ export default function CreatePostScreen({ navigation }) {
   const handlePost = async () => {
     try {
 
+      setPosting(true);
+
       if (!images.length) {
         return Alert.alert(
           "Error",
@@ -479,6 +483,8 @@ export default function CreatePostScreen({ navigation }) {
         error.response?.data?.message ||
         error.message
       );
+    } finally {
+      setPosting(false);
     }
   };
 
@@ -536,14 +542,21 @@ export default function CreatePostScreen({ navigation }) {
             Create Post
           </Text>
 
-          <TouchableOpacity
-            onPress={handlePost}
-            className="bg-[#1D618F] px-4 py-2 rounded-full"
-          >
-            <Text className="text-white text-sm font-bold">
-              Share
-            </Text>
-          </TouchableOpacity>
+         <TouchableOpacity
+  onPress={handlePost}
+  disabled={posting}
+  className={`px-4 py-2 rounded-full ${
+    posting ? "bg-gray-400" : "bg-[#1D618F]"
+  }`}
+>
+  {posting ? (
+    <ActivityIndicator color="#fff" size="small" />
+  ) : (
+    <Text className="text-white text-sm font-bold">
+      Share
+    </Text>
+  )}
+</TouchableOpacity>
         </View>
       </View>
 
